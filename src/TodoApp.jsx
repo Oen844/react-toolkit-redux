@@ -1,37 +1,52 @@
 import React from 'react'
-import { useGetTodosQuery } from './store'
+import { useGetTodoQuery, useGetTodosQuery } from './store';
+import { useState } from 'react';
 
 
 export const TodoApp = () => {
 
-  const { data: todos = [], isLoading} = useGetTodosQuery();
-  console.log(todos);
+  const [todoId, setTodoId] = useState(1);
+
+  // const { data: todos = [], isLoading} = useGetTodosQuery();
+  const { data: todo, isLoading } = useGetTodoQuery(todoId);
+
+  const nexTodo = () => {
+    setTodoId(todoId + 1);
+  }
+  const prevTodo = () => {
+    if (todoId > 1) {
+      setTodoId(todoId - 1);
+    }
+  }
 
 
   return (
     <>
       <h1>TodoApp</h1>
       <hr />
-      <h4>isLoading: { isLoading ? 'true' : 'False' }</h4>
+      <h4>isLoading: {isLoading ? 'true' : 'False'}</h4>
 
-      <pre>...</pre>
+      <pre>{JSON.stringify(todo)}</pre>
 
       <ul>
-      {/* { data.map(data => (
+        {/* { data.map(data => (
          <li key={ data.id }>{ data.title }</li>
         )) } */}
 
-        {
+        {/* {
           todos.map(todo => (
             <li key={ todo.id }> <strong> {todo.completed ? 'Done: ' : 'Pending: '}</strong>{ todo.title }</li>
           ))
-        }
+        } */}
 
 
       </ul>
 
-      <button>
+      <button onClick={nexTodo }>
         Next Todo
+      </button>
+      <button onClick={prevTodo}>
+        prev Todo
       </button>
     </>
   )
